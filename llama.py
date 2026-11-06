@@ -1,12 +1,11 @@
 import os
 
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_community.llms import Ollama
+from langchain_groq import ChatGroq
 from langchain_core.output_parsers import StrOutputParser
 import streamlit as st
 
-model = os.getenv("OLLAMA_MODEL", "llama3.1:latest")
-ollama_base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 
 # Prompt Template
 prompt = ChatPromptTemplate.from_messages(
@@ -18,21 +17,14 @@ prompt = ChatPromptTemplate.from_messages(
 
 # Streamlit UI
 st.set_page_config(page_title="LangChain Chatbot", layout="centered")
-st.title("LangChain Chatbot with Ollama")
+st.title("LangChain Chatbot with Groq")
 
-# Sidebar for model selection
 st.sidebar.title("Model Settings")
-# selected_model = st.sidebar.selectbox(
-#     "Choose a model:",
-#     options=["qwen2.5:3b", "llama2", "llama3.1:latest"],
-#     index=0,
-#     help="qwen2.5:3b runs much faster on CPU!"
-# )
 
 input_text = st.text_input("Search the topic you want", placeholder="Ask a question...")
 
 # LangChain Chain
-llm = Ollama(model=model, base_url=ollama_base_url)
+llm = ChatGroq(model=model)
 output_parser = StrOutputParser()
 chain = prompt | llm | output_parser
 
