@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: langchain-chatbot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run llama.py --server.address 0.0.0.0 --server.port $PORT
+    envVars:
+      - key: OLLAMA_BASE_URL
+        sync: false
+      - key: OLLAMA_MODEL
+        value: llama3.1:latest
